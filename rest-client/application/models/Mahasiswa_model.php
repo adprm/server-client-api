@@ -35,10 +35,19 @@ class Mahasiswa_model extends CI_model {
             "nama" => $this->input->post('nama', true),
             "nrp" => $this->input->post('nrp', true),
             "email" => $this->input->post('email', true),
-            "jurusan" => $this->input->post('jurusan', true)
+            "jurusan" => $this->input->post('jurusan', true),
+            'rest-key' => 'adprm123'
         ];
 
-        $this->db->insert('mahasiswa', $data);
+        // $this->db->insert('mahasiswa', $data);
+
+        $response = $this->_client->request('POST', 'mahasiswa', [
+            'form_params' => $data
+        ]);
+
+        $result = json_decode($response->getBody()->getContents(), true);
+
+        return $result;
     }
 
     public function hapusDataMahasiswa($id)
