@@ -3,13 +3,21 @@
 use GuzzleHttp\Client;
 
 class Mahasiswa_model extends CI_model {
+
+    private $_client;
+
+    public function __construct() {
+        $this->_client = new Client([
+            'base_uri' => 'http://localhost/rest-api/server-client-api/rest-server/api/',
+            'auth' => ['admin', '1234']
+        ]);
+    }
+
     public function getAllMahasiswa()
     {
         // return $this->db->get('mahasiswa')->result_array();
-        $client = new Client();
 
-        $response = $client->request('GET', 'http://localhost/rest-api/server-client-api/rest-server/api/mahasiswa', [
-            'auth' => ['admin', '1234'],
+        $response = $this->_client->request('GET', 'mahasiswa', [
             'query' => [
                 'rest-key' => 'adprm123'
             ]
@@ -42,10 +50,8 @@ class Mahasiswa_model extends CI_model {
     public function getMahasiswaById($id)
     {
         // return $this->db->get_where('mahasiswa', ['id' => $id])->row_array();
-        $client = new Client();
 
-        $response = $client->request('GET', 'http://localhost/rest-api/server-client-api/rest-server/api/mahasiswa', [
-            'auth' => ['admin', '1234'],
+        $response = $this->_client->request('GET', 'mahasiswa', [
             'query' => [
                 'rest-key' => 'adprm123',
                 'id' => $id
