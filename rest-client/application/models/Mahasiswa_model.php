@@ -41,7 +41,21 @@ class Mahasiswa_model extends CI_model {
 
     public function getMahasiswaById($id)
     {
-        return $this->db->get_where('mahasiswa', ['id' => $id])->row_array();
+        // return $this->db->get_where('mahasiswa', ['id' => $id])->row_array();
+        $client = new Client();
+
+        $response = $client->request('GET', 'http://localhost/rest-api/server-client-api/rest-server/api/mahasiswa', [
+            'auth' => ['admin', '1234'],
+            'query' => [
+                'rest-key' => 'adprm123',
+                'id' => $id
+            ]
+        ]);
+
+        $result = json_decode($response->getBody()->getContents(), true);
+
+        return $result['data'][0];
+
     }
 
     public function ubahDataMahasiswa()
